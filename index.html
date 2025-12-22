@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Weather App</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+
+<!-- Firebase SDKs (compat) -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+</head>
+
+<body class="day">
+
+<!-- AUTH -->
+<div class="auth-box" id="authBox">
+  <div id="loginBox">
+    <h2>Login</h2>
+    <input type="email" id="loginEmail" placeholder="Email">
+    <input type="password" id="loginPassword" placeholder="Password">
+    <button onclick="login()">Login</button>
+    <p class="link" onclick="showSignup()">Create new account</p>
+  </div>
+
+  <div id="signupBox" class="hidden">
+    <h2>Sign Up</h2>
+    <input type="email" id="signupEmail" placeholder="Email">
+    <input type="password" id="signupPassword" placeholder="Password (min 6)">
+    <button onclick="signup()">Sign Up</button>
+    <p class="link" onclick="showLogin()">Already have an account?</p>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="container hidden" id="app">
+  <div class="top-bar">
+    <span id="userEmail"></span>
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <h1>🌦 Weather App</h1>
+
+  <div class="controls">
+    <input type="text" id="cityInput" placeholder="Enter city (Paris, Kolkata)">
+    <button onclick="getWeatherByCity()">Search</button>
+    <button onclick="getWeatherByLocation()">📍</button>
+  </div>
+
+  <h2 id="cityName"></h2>
+
+  <div class="time-box">
+    <span id="timeLabel">City Time</span> :
+    <span id="localTime"></span>
+  </div>
+
+  <button class="toggle-btn" onclick="toggleTimeMode()">Switch Time</button>
+
+  <div id="emoji"></div>
+  <div id="temperature"></div>
+  <div id="description"></div>
+</div>
+
+<script src="firebase.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
