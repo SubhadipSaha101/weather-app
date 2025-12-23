@@ -2,48 +2,64 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Weather App</title>
-<meta name="google-site-verification" content="UDqLt5GPVG6JykjWTzwyENaG0vY8DTQ0ONstkRXuDA4" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="style.css">
 
-<!-- Firebase SDKs (compat) -->
+<meta name="google-site-verification"
+content="UDqLt5GPVG6JykjWTzwyENaG0vY8DTQ0ONstkRXuDA4"/>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Weather App</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 </head>
 
 <body class="day">
 
-<!-- AUTH -->
+<!-- Effects -->
+<div id="effects">
+  <div id="rain" class="effect hidden"></div>
+  <div id="snow" class="effect hidden"></div>
+  <div id="clouds" class="effect hidden"></div>
+  <div id="stars" class="effect hidden"></div>
+</div>
+
+<!-- Offline -->
+<div id="offlineBanner" class="offline hidden">🌐 No internet connection</div>
+
+<!-- Auth -->
 <div class="auth-box" id="authBox">
   <div id="loginBox">
     <h2>Login</h2>
-    <input type="email" id="loginEmail" placeholder="Email">
-    <input type="password" id="loginPassword" placeholder="Password">
+    <input id="loginEmail" type="email" placeholder="Email">
+    <input id="loginPassword" type="password" placeholder="Password">
     <button onclick="login()">Login</button>
-    <p class="link" onclick="showSignup()">Create new account</p>
+    <p class="link" onclick="showSignup()">Create account</p>
   </div>
 
   <div id="signupBox" class="hidden">
     <h2>Sign Up</h2>
-    <input type="email" id="signupEmail" placeholder="Email">
-    <input type="password" id="signupPassword" placeholder="Password (min 6)">
+    <input id="signupEmail" type="email" placeholder="Email">
+    <input id="signupPassword" type="password" placeholder="Password">
     <button onclick="signup()">Sign Up</button>
-    <p class="link" onclick="showLogin()">Already have an account?</p>
+    <p class="link" onclick="showLogin()">Already have account?</p>
   </div>
 </div>
 
-<!-- APP -->
+<!-- App -->
 <div class="container hidden" id="app">
   <div class="top-bar">
     <span id="userEmail"></span>
     <button onclick="logout()">Logout</button>
   </div>
 
-  <h1>🌦 Weather App</h1>
+  <h1>🌦 Smart Weather</h1>
 
   <div class="controls">
-    <input type="text" id="cityInput" placeholder="Enter city (Paris, Kolkata)">
+    <input id="cityInput" placeholder="Enter city">
     <button onclick="getWeatherByCity()">Search</button>
     <button onclick="getWeatherByLocation()">📍</button>
   </div>
@@ -51,7 +67,7 @@
   <h2 id="cityName"></h2>
 
   <div class="time-box">
-    <span id="timeLabel">City Time</span> :
+    <span id="timeLabel"></span>
     <span id="localTime"></span>
   </div>
 
@@ -60,7 +76,19 @@
   <div id="emoji"></div>
   <div id="temperature"></div>
   <div id="description"></div>
+
+  <div id="loader" class="loader hidden">⏳ Loading...</div>
+  <button id="retryBtn" class="hidden" onclick="retryWeather()">🔄 Retry</button>
+  <button id="installBtn" class="hidden">📱 Install App</button>
 </div>
+
+<!-- Sounds -->
+<audio id="rainSound" loop>
+  <source src="https://assets.mixkit.co/sfx/preview/mixkit-rain-loop-1246.mp3">
+</audio>
+<audio id="thunderSound">
+  <source src="https://assets.mixkit.co/sfx/preview/mixkit-thunder-rumble-1277.mp3">
+</audio>
 
 <script src="firebase.js"></script>
 <script src="script.js"></script>
