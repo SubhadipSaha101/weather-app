@@ -83,6 +83,8 @@ function fetchWeather(q){
   applyAnimation(d.weather[0].id);
   playWeatherSound(d.weather[0].id);
   updateTimeAndTheme();
+  prepareSpeechText();   // 🔊 prepare text for speech
+
  })
  .catch(()=>{
   if(!navigator.onLine) showError("No internet connection");
@@ -185,6 +187,39 @@ function getEmoji(id){
   if(id === 800) return "☀️";
   return "☁️";
 }
+
+/* 🔊 SPEECH (MOBILE SAFE) */
+/* 🔊 SPEECH (MOBILE SAFE) */
+let speechText = "";
+
+function prepareSpeechText() {
+  if (!lastData) return;
+
+  const city = `${lastData.name}, ${lastData.sys.country}`;
+  const temp = Math.round(lastData.main.temp);
+  const desc = lastData.weather[0].description;
+
+  speechText = `The weather in ${city} is ${desc} with temperature ${temp} degrees Celsius.`;
+}
+
+function speakWeather() {
+  if (!speechText) {
+    alert("Please search weather first");
+    return;
+  }
+
+  // VERY IMPORTANT FOR MOBILE
+  window.speechSynthesis.cancel();
+
+  const msg = new SpeechSynthesisUtterance(speechText);
+  msg.lang = "en-US";
+  msg.rate = 1;
+  msg.pitch = 1;
+
+  window.speechSynthesis.speak(msg);
+}
+
+
 
 
 /* OFFLINE */
