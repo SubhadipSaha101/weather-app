@@ -95,36 +95,39 @@ function fetchWeather(q){
 
 /* ANIMATION */
 function applyAnimation(id){
+  stopRain();
+  stopSnow();
+
   snow.classList.add("hidden");
   rain.classList.add("hidden");
   document.body.classList.remove("flash");
 
   const main = lastData.weather[0].main.toLowerCase();
   const desc = lastData.weather[0].description.toLowerCase();
-  const clouds = lastData.clouds?.all || 0;
-  const humidity = lastData.main.humidity;
 
   // ❄ Snow
-  if(id >= 600 && id <= 622){
+  if (id >= 600 && id <= 622) {
     snow.classList.remove("hidden");
+    startSnow();
   }
 
-  // 🌧 Rain (balanced & accurate)
-  else if(
-    (id >= 300 && id <= 531) ||            // drizzle + rain
-    main === "rain" ||                     // explicit rain
-    desc.includes("light rain") ||          // clear rain signal
-    desc.includes("moderate rain") ||
-    desc.includes("heavy rain")
-  ){
+  // 🌧 Rain
+  else if (
+    (id >= 300 && id <= 531) ||
+    main === "rain" ||
+    desc.includes("rain")
+  ) {
     rain.classList.remove("hidden");
+    startRain();
   }
 
   // ⚡ Thunder
-  if(id < 300){
+  if (id < 300) {
     document.body.classList.add("flash");
   }
 }
+
+
 
 
 function isRainCondition(d){
@@ -140,8 +143,6 @@ function isRainCondition(d){
     desc.includes("heavy rain")
   );
 }
-
-
 
 
 /* TIME */
@@ -178,6 +179,46 @@ function toggleTimeMode(){
 }
 
 setInterval(updateTimeAndTheme,1000);
+
+/* 🌧 REALISTIC RAIN DROPS */
+function startRain() {
+  rain.innerHTML = ""; // clear old drops
+
+  for (let i = 0; i < 80; i++) {
+    const drop = document.createElement("div");
+    drop.className = "raindrop";
+
+    drop.style.left = Math.random() * 100 + "vw";
+    drop.style.animationDuration = (0.5 + Math.random()) + "s";
+    drop.style.animationDelay = Math.random() + "s";
+
+    rain.appendChild(drop);
+  }
+}
+
+function stopRain() {
+  rain.innerHTML = "";
+}
+/* ❄ REALISTIC SNOW FLAKES */
+function startSnow() {
+  snow.innerHTML = "";
+
+  for (let i = 0; i < 60; i++) {
+    const flake = document.createElement("div");
+    flake.className = "snowflake";
+
+    flake.style.left = Math.random() * 100 + "vw";
+    flake.style.animationDuration = (2 + Math.random() * 3) + "s";
+    flake.style.animationDelay = Math.random() + "s";
+    flake.style.opacity = Math.random();
+
+    snow.appendChild(flake);
+  }
+}
+
+function stopSnow() {
+  snow.innerHTML = "";
+}
 
 /* EMOJI */
 function getEmoji(id){
